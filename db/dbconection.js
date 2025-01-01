@@ -7,7 +7,7 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
-const uri=process.env.mongo_url
+const uri=("mongodb://localhost:27017/blog-app1")
 const conectedDb=async ()=>{
 
     try {

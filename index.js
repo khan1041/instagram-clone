@@ -7,8 +7,8 @@ import conectedDb from './db/dbconection.js'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import router from './routes/userroutes.js'
-import Chatrouter from './routes/meassageroute.js';
-import Postrouter from './routes/postrouter.js';
+import { v2 as cloudinary } from "cloudinary";
+
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from './middlewares/errorhandel.js';
 //import { errorMiddleware } from './midelware/errorhandel.js';
@@ -20,8 +20,7 @@ app.use(cookieParser());
 
 export default app
 
-
-
+app.use("/uplods",express.static("./uplods"))
 app.use(
   cors({
     origin:true,
@@ -33,8 +32,7 @@ app.use(
 
 
 app.use('/app/auth',router)
-app.use('/app/post',Postrouter)
-app.use('/app/message',Chatrouter)
+
 
 const port=8000
 
@@ -50,6 +48,13 @@ app.use(fileUpload({
 
  dotenv.config()
 
+ cloudinary.config({ 
+  cloud_name:process.env.CLOUD_NAME, 
+  api_key:process.env. CLOUD_API_KEY, 
+  api_secret:process.env.API_SECRET_KEY  // Click 'View API Keys' above to copy your API secret
+});
+
+ 
 
 
  

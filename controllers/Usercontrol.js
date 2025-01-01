@@ -31,18 +31,37 @@ try {
     if(user){
        return res.status(401).json({msg:'other email use please'})
     }
-   
+   const{profile}=req.file
+    const uplod=await cloudinary.uploader.upload(req.file.path)
+    console.log(uplod)
+  
     const strongPassword=await bcrypt.hash(password,10)
-
-     await User.create({
-        username,email,password:strongPassword
-     })
  
-     return res.status(201).json({msg:"Successfully"})
-   
+
+   const create=await User.create({
+        username,email,password:strongPassword,profile:uplod.secure_url
+     })
+     return res.status(201).json({msg:create, token:await create.generateToken(),
+        userId:create._id.toString()})   
+      
+    
 } catch (error) {
     console.log(error)
 }}
+
+//get user
+export const alluser=async(req,res)=>{
+
+    try {
+        const alldatafind=await User.find()
+        
+        return res.status(200).json({alldatafind})
+    } catch (error) {
+        console.log(error)
+    }
+    
+    }
+
 
 
 //Login--//
@@ -81,7 +100,7 @@ try {
         };
 
         const tokenData = {
-            userId: user._id
+            userId: user.id
         }
         const token=await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
 

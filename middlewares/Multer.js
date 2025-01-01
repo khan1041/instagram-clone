@@ -1,47 +1,39 @@
 
-
-//import { startsWith } from 'lodash'
 import express from 'express'
-// import path from 'path'
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, './uplods')
-//     },
-//     filename: function (req, file, cb) {
+import multer from 'multer'
+import path from 'path'
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uplods')
+    },
+    filename: function (req, file, cb) {
     
-//       cb(null, `image-${Date.now()}. ${file.originalname}`)
-//     }
-//   })
+      cb(null, `image-${Date.now()}. ${file.originalname}`)
+    }
+  })
   
-//   //img
-//   const isImage=(req,file,cb)=>{
+  //img
+  const isImage=(req,file,cb)=>{
 
-//     if(file.mimetype.startsWith("image")){
+    if(file.mimetype.startsWith("image")){
 
-//       cb(null,true)
-//     }
-//     else{
-//       cb(new Error("only image is allowd"))
-//     }
-
-
-//   }
+      cb(null,true)
+    }
+    else{
+      cb(new Error("only image is allowd"))
+    }
 
 
+  }
 
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, './uplods')
-//   },
-//   filename: function (req, file, cb) {
+  const upload = multer({ 
     
-//     cb(null,file.originalname)
-//   }
-// })
+    
+    storage: storage,
+     fileFilter:isImage
 
-import multer from "multer";
-const upload = multer({
-    storage:multer.memoryStorage(),
-});
-export default upload;
+   })
+
+export default upload
+
